@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
+import ReactModal from "react-modal";
 import boardService from "../services/board.service";
 import authService from "../services/auth.service";
 import CommentService from "../services/CommentService";
 
 const ViewBoard = () => {
-  const { id } = useParams(); // URL 매개변수에서 게시물 ID를 추출합니다.
+  const { id } = useParams();
   const [board, setBoard] = useState(null);
   const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState([]);
   const [commentContent, setCommentContent] = useState("");
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [editedCommentId, setEditedCommentId] = useState(null);
+  const [editedCommentContent, setEditedCommentContent] = useState("");
   const navigate = useNavigate();
   const currentUser = authService.getCurrentUser();
 
@@ -73,10 +77,9 @@ const ViewBoard = () => {
       });
   };
 
-  const updateComment = (commentId, updatedContent, updatedCreatedAt) => {
+  const updateComment = (commentId, updatedContent) => {
     const updatedComment = {
       content: updatedContent,
-      createdAt: updatedCreatedAt,
     };
     CommentService.updateComment(commentId, updatedComment)
       .then((res) => {
@@ -86,7 +89,6 @@ const ViewBoard = () => {
         console.log(error);
       });
   };
-  
 
   const deleteComment = (commentId) => {
     CommentService.deleteComment(commentId)
@@ -96,6 +98,18 @@ const ViewBoard = () => {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const openModal = (commentId, commentContent) => {
+    setModalIsOpen(true);
+    setEditedCommentId(commentId);
+    setEditedCommentContent(commentContent);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setEditedCommentId(null);
+    setEditedCommentContent("");
   };
 
   if (loading) {
@@ -110,7 +124,7 @@ const ViewBoard = () => {
           <div className="card-body">
             <p>{board.content}</p>
             <p>작성자: {board.writer}</p>
-            <p>작성일: {board.regdate}</p>
+            <p>작성일: {new Date(board.regdate).toLocaleDateString()}</p>
             {currentUser && currentUser.username === board.writer && (
               <div className="d-flex justify-content-start">
                 <Link
@@ -133,20 +147,12 @@ const ViewBoard = () => {
             <div key={comment.id}>
               <p>{comment.content}</p>
               <p>작성자: {comment.username}</p>
-              <p>작성일: {comment.createdAt}</p>
+              <p>작성일: {new Date(board.regdate).toLocaleDateString()}</p>
               {currentUser && currentUser.username === comment.username && (
                 <div className="d-flex justify-content-start">
                   <button
                     className="btn btn-primary me-2"
-                    onClick={() => {
-                      const updatedContent = prompt(
-                        "댓글 내용을 입력하세요.",
-                        comment.content
-                      );
-                      if (updatedContent) {
-                        updateComment(comment.id, updatedContent);
-                      }
-                    }}
+                    onClick={() => openModal(comment.id, comment.content)}
                   >
                     수정
                   </button>
@@ -185,6 +191,32 @@ const ViewBoard = () => {
           )}
         </div>
       </div>
+
+      <ReactModal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Edit Comment Modal"
+      >
+        <h2>댓글 수정</h2>
+        <textarea
+          rows="3"
+          className="form-control"
+          value={editedCommentContent}
+          onChange={(e) => setEditedCommentContent(e.target.value)}
+        ></textarea>
+        <button
+          className="btn btn-primary mt-2"
+          onClick={() => {
+            updateComment(editedCommentId, editedCommentContent);
+            closeModal();
+          }}
+        >
+          저장
+        </button>
+        <button className="btn btn-secondary mt-2" onClick={closeModal}>
+          취소
+        </button>
+      </ReactModal>
     </>
   );
 };
