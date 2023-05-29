@@ -108,9 +108,22 @@ a {
   transition: all 300ms ease-in;
 }
 
+.button a{
+  color: white;
+  text-decoration: none;
+}
+
 .button:hover {
   cursor: pointer;
   transform: scale(1.1);
+}
+
+.button:hover a{
+  cursor: pointer;
+  transform: scale(1.1);
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
 }
 
 /* media queries */

@@ -8,9 +8,9 @@ const GetStarted = () => {
     <section className="g-wrapper">
       <div className="paddings innerWidth g-container">
         <div className="flexColCenter inner-container">
-          <span className="primaryText">비교해줘</span>
+        <img src="./logo.png" alt="logo" width={110} />
           <span className="secondaryText">
-            보다 쉽고 빠른 대출 서비스
+            보다 쉽고 빠른 대출 비교 서비스
           </span>
           <button className="button">
           <a> <Link to={"/register"}>시작하기</Link></a>
