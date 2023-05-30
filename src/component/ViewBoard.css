@@ -1,31 +1,26 @@
-.ViewBoard-wrapper {
-  width: 70%;
-  margin: 0 auto;
-}
-.ViewBoard-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  width: 100%;
-  max-width: 500px; 
-  margin: 0 auto;
-}
-
-.comment-input-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.full-width {
   width: 100%;
 }
-
-.comment-input-container {
-  width: 100%; 
-  display: flex;
-  align-items: flex-start;
-}
-
 .comment-buttons {
-  margin-top: 8px;
-  margin-left: 8px;
+  display: flex;
+  justify-content: flex-end;
+  border: none;
+  outline: none;
+  padding: 10px;
+}
+
+.cancel-button {
+  margin-left: auto;
+  background-color: transparent;
+  color: black;
+  transition: background-color 0.3s;
+  border: none;
+  outline: none;
+}
+
+.cancel-button:hover {
+  background-color: #ccc;
+  color: black;
+  border: none;
+  outline: none;
 }

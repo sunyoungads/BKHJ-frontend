@@ -123,7 +123,8 @@ const ViewBoard = () => {
   return (
     <>
       <section className="ViewBoard-wrapper">
-        <div className="ViewBoard-box">
+        <div className="ViewBoard-container">
+          <div className="ViewContent">
           <div className="card">
             <div className="card-header fs-3 text-center">{board.title}</div>
             <div className="card-body">
@@ -145,33 +146,34 @@ const ViewBoard = () => {
               )}
             </div>
           </div>
-        </div>
+          </div>
+        
 
-        <div className="ViewComment-box">
-          <div className="ViewComment-container">
+        <div className="ViewComment-container">
+          <div className="ViewComment">
             <h4>댓글</h4>
             {currentUser ? (
               <div className="comment-input-container">
-                <div className="comment-input-wrapper">
                   <TextField
-                    id="standard-multiline-flexible"
-                    placeholder="댓글 추가..."
-                    multiline
-                    variant="standard"
-                    rows={1}
-                    value={commentContent}
-                    onChange={handleCommentChange}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <AccountCircle />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
+  id="standard-multiline-flexible"
+  placeholder="댓글 추가..."
+  multiline
+  variant="standard"
+  rows={1}
+  value={commentContent}
+  onChange={handleCommentChange}
+  InputProps={{
+    startAdornment: (
+      <InputAdornment position="start">
+        <AccountCircle />
+      </InputAdornment>
+    ),
+  }}
+  className="full-width"
+/>
                   <div className="comment-buttons">
                     <button
-                      className="btn btn-secondary mt-2"
+                      className="btn btn-secondary mt-2 cancel-button"
                       onClick={() => setCommentContent("")}
                     >
                       취소
@@ -184,11 +186,10 @@ const ViewBoard = () => {
                     </button>
                   </div>
                 </div>
-              </div>
             ) : (
               <p>댓글을 작성하려면 로그인이 필요합니다.</p>
             )}
-          </div>
+          
           <ReactModal
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
@@ -214,8 +215,8 @@ const ViewBoard = () => {
               취소
             </button>
           </ReactModal>
-
-          <div className="ViewCommentList-container">
+              </div>
+          <div className="ViewCommentList">
             <h4>댓글 목록</h4>
             {comments.map((comment) => (
               <div key={comment.id}>
@@ -241,6 +242,7 @@ const ViewBoard = () => {
               </div>
             ))}
           </div>
+        </div>
         </div>
       </section>
     </>
