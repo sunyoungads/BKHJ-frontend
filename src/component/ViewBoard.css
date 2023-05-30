@@ -8,7 +8,12 @@
   outline: none;
   padding: 10px;
 }
-
+.comment-buttons button {
+    border-radius: 30px;
+    padding: auto;
+    width: 70px;
+    height: 40px
+  }
 .cancel-button {
   margin-left: auto;
   background-color: transparent;

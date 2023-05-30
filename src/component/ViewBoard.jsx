@@ -20,6 +20,7 @@ const ViewBoard = () => {
   const [editedCommentContent, setEditedCommentContent] = useState("");
   const navigate = useNavigate();
   const currentUser = authService.getCurrentUser();
+  const [isCommentEmpty, setIsCommentEmpty] = useState(true);
 
   useEffect(() => {
     fetchBoard();
@@ -62,6 +63,7 @@ const ViewBoard = () => {
 
   const handleCommentChange = (e) => {
     setCommentContent(e.target.value);
+    setIsCommentEmpty(e.target.value === "");
   };
 
   const createComment = () => {
@@ -125,124 +127,129 @@ const ViewBoard = () => {
       <section className="ViewBoard-wrapper">
         <div className="ViewBoard-container">
           <div className="ViewContent">
-          <div className="card">
-            <div className="card-header fs-3 text-center">{board.title}</div>
-            <div className="card-body">
-              <p>{board.content}</p>
-              <p>작성자: {board.writer}</p>
-              <p>작성일: {new Date(board.regdate).toLocaleDateString()}</p>
-              {currentUser && currentUser.username === board.writer && (
-                <div className="d-flex justify-content-start">
-                  <Link
-                    to={`/editBoard/${board.id}`}
-                    className="btn btn-primary me-2"
-                  >
-                    수정
-                  </Link>
-                  <button onClick={deleteBoard} className="btn btn-danger">
-                    삭제
-                  </button>
-                </div>
-              )}
+            <div className="card">
+              <div className="card-header fs-3 text-center">{board.title}</div>
+              <div className="card-body">
+                <p>{board.content}</p>
+                <p>작성자: {board.writer}</p>
+                <p>작성일: {new Date(board.regdate).toLocaleDateString()}</p>
+                {currentUser && currentUser.username === board.writer && (
+                  <div className="d-flex justify-content-start">
+                    <Link
+                      to={`/editBoard/${board.id}`}
+                      className="btn btn-primary me-2"
+                    >
+                      수정
+                    </Link>
+                    <button onClick={deleteBoard} className="btn btn-danger">
+                      삭제
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-          </div>
-        
 
-        <div className="ViewComment-container">
-          <div className="ViewComment">
-            <h4>댓글</h4>
-            {currentUser ? (
-              <div className="comment-input-container">
+          <div className="ViewComment-container">
+            <div className="ViewComment">
+              <h4>댓글</h4>
+              {currentUser ? (
+                <div className="comment-input-container">
                   <TextField
-  id="standard-multiline-flexible"
-  placeholder="댓글 추가..."
-  multiline
-  variant="standard"
-  rows={1}
-  value={commentContent}
-  onChange={handleCommentChange}
-  InputProps={{
-    startAdornment: (
-      <InputAdornment position="start">
-        <AccountCircle />
-      </InputAdornment>
-    ),
-  }}
-  className="full-width"
-/>
+                    id="standard-multiline-flexible"
+                    placeholder="댓글 추가..."
+                    multiline
+                    variant="standard"
+                    rows={1}
+                    value={commentContent}
+                    onChange={handleCommentChange}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AccountCircle />
+                        </InputAdornment>
+                      ),
+                    }}
+                    className="full-width"
+                  />
                   <div className="comment-buttons">
                     <button
                       className="btn btn-secondary mt-2 cancel-button"
-                      onClick={() => setCommentContent("")}
+                      onClick={() => {
+                        setCommentContent("");
+                        setIsCommentEmpty(true);
+                      }}
                     >
                       취소
                     </button>
                     <button
-                      className="btn btn-primary mt-2"
+                      className={`btn ${
+                        isCommentEmpty ? "btn-secondary" : "btn-primary"
+                      } mt-2`}
+                      disabled={isCommentEmpty}
                       onClick={createComment}
                     >
                       댓글
                     </button>
                   </div>
                 </div>
-            ) : (
-              <p>댓글을 작성하려면 로그인이 필요합니다.</p>
-            )}
-          
-          <ReactModal
-            isOpen={modalIsOpen}
-            onRequestClose={closeModal}
-            contentLabel="Edit Comment Modal"
-          >
-            <h2>댓글 수정</h2>
-            <textarea
-              rows="3"
-              className="form-control"
-              value={editedCommentContent}
-              onChange={(e) => setEditedCommentContent(e.target.value)}
-            ></textarea>
-            <button
-              className="btn btn-primary mt-2"
-              onClick={() => {
-                updateComment(editedCommentId, editedCommentContent);
-                closeModal();
-              }}
-            >
-              저장
-            </button>
-            <button className="btn btn-secondary mt-2" onClick={closeModal}>
-              취소
-            </button>
-          </ReactModal>
-              </div>
-          <div className="ViewCommentList">
-            <h4>댓글 목록</h4>
-            {comments.map((comment) => (
-              <div key={comment.id}>
-                <p>{comment.content}</p>
-                <p>작성자: {comment.username}</p>
-                <p>작성일: {comment.createdAt}</p>
-                {currentUser && currentUser.username === comment.username && (
-                  <div className="d-flex justify-content-start">
-                    <button
-                      className="btn btn-primary me-2"
-                      onClick={() => openModal(comment.id, comment.content)}
-                    >
-                      수정
-                    </button>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => deleteComment(comment.id)}
-                    >
-                      삭제
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
+              ) : (
+                <p>댓글을 작성하려면 로그인이 필요합니다.</p>
+              )}
+
+              <ReactModal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                contentLabel="Edit Comment Modal"
+              >
+                <h2>댓글 수정</h2>
+                <textarea
+                  rows="3"
+                  className="form-control"
+                  value={editedCommentContent}
+                  onChange={(e) => setEditedCommentContent(e.target.value)}
+                ></textarea>
+                <button
+                  className="btn btn-primary mt-2"
+                  onClick={() => {
+                    updateComment(editedCommentId, editedCommentContent);
+                    closeModal();
+                  }}
+                >
+                  저장
+                </button>
+                <button className="btn btn-secondary mt-2" onClick={closeModal}>
+                  취소
+                </button>
+              </ReactModal>
+            </div>
+            <div className="ViewCommentList">
+              <h4>댓글 목록</h4>
+              {comments.map((comment) => (
+                <div key={comment.id}>
+                  <p>{comment.content}</p>
+                  <p>작성자: {comment.username}</p>
+                  <p>작성일: {comment.createdAt}</p>
+                  {currentUser && currentUser.username === comment.username && (
+                    <div className="d-flex justify-content-start">
+                      <button
+                        className="btn btn-primary me-2"
+                        onClick={() => openModal(comment.id, comment.content)}
+                      >
+                        수정
+                      </button>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => deleteComment(comment.id)}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
         </div>
       </section>
     </>
