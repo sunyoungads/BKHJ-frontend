@@ -7,8 +7,8 @@
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  width: 100%; /* ViewBoard-box의 가로 너비를 100%로 설정 */
-  max-width: 500px; /* ViewBoard-box의 최대 너비 설정 */
+  width: 100%;
+  max-width: 500px; 
   margin: 0 auto;
 }
 
@@ -16,11 +16,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  width: 100%; /* TextField가 ViewBoard-box에 꽉 차도록 설정 */
+  width: 100%;
 }
 
 .comment-input-container {
-  width: 100%; /* ViewBoard-box와 동일한 가로 너비 설정 */
+  width: 100%; 
   display: flex;
   align-items: flex-start;
 }
