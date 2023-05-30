@@ -5,6 +5,10 @@ import boardService from "../services/board.service";
 import authService from "../services/auth.service";
 import CommentService from "../services/CommentService";
 import './ViewBoard.css';
+import TextField from '@mui/material/TextField';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import InputAdornment from '@mui/material/InputAdornment';
+
 
 const ViewBoard = () => {
   const { id } = useParams();
@@ -119,7 +123,8 @@ const ViewBoard = () => {
 
   return (
     <>
-      <div className="view-board-container">
+    <section className="ViewBoard-wrapper">
+        <div className="ViewBoard-box">
         <div className="card">
           <div className="card-header fs-3 text-center">{board.title}</div>
           <div className="card-body">
@@ -141,19 +146,29 @@ const ViewBoard = () => {
             )}
           </div>
         </div>
-
+        </div>
         
-
-        <div className="view-board-container">
-          <h4>댓글 작성</h4>
+        <div className="ViewComment-box">
+        <div className="ViewComment-container">
+          <h4>댓글</h4>
           {currentUser ? (
-            <div>
-              <textarea
-                rows="3"
-                className="form-control"
-                value={commentContent}
-                onChange={handleCommentChange}
-              ></textarea>
+  <div>
+    <TextField
+      id="standard-multiline-flexible"
+      placeholder="댓글 추가..."
+      multiline
+      variant="standard"
+      rows={2}
+      value={commentContent}
+      onChange={handleCommentChange}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <AccountCircle />
+          </InputAdornment>
+        ),
+      }}
+    />
               <button
                 className="btn btn-primary mt-2"
                 onClick={createComment}
@@ -165,8 +180,6 @@ const ViewBoard = () => {
             <p>댓글을 작성하려면 로그인이 필요합니다.</p>
           )}
         </div>
-      </div>
-
       <ReactModal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -192,32 +205,35 @@ const ViewBoard = () => {
           취소
         </button>
       </ReactModal>
-      <div className="view-board-container">
-          <h4>댓글 목록</h4>
-          {comments.map((comment) => (
-            <div key={comment.id}>
-              <p>{comment.content}</p>
-              <p>작성자: {comment.username}</p>
-              <p>작성일: {comment.createdAt}</p>
-              {currentUser && currentUser.username === comment.username && (
-                <div className="d-flex justify-content-start">
-                  <button
-                    className="btn btn-primary me-2"
-                    onClick={() => openModal(comment.id, comment.content)}
-                  >
-                    수정
-                  </button>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => deleteComment(comment.id)}
-                  >
-                    삭제
-                  </button>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+
+      <div className="ViewCommentList-container">
+        <h4>댓글 목록</h4>
+        {comments.map((comment) => (
+          <div key={comment.id}>
+            <p>{comment.content}</p>
+            <p>작성자: {comment.username}</p>
+            <p>작성일: {comment.createdAt}</p>
+            {currentUser && currentUser.username === comment.username && (
+              <div className="d-flex justify-content-start">
+                <button
+                  className="btn btn-primary me-2"
+                  onClick={() => openModal(comment.id, comment.content)}
+                >
+                  수정
+                </button>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => deleteComment(comment.id)}
+                >
+                  삭제
+                </button>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      </div>
+      </section>
     </>
   );
 };
