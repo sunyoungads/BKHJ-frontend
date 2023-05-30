@@ -1,17 +1,26 @@
-.ViewBoard-wrapper{
-padding-left: 80px;
-padding-right: 80px;
+.ViewBoard-wrapper {
+  width: 70%;
+  margin: 0 auto;
 }
-.ViewBoard-box{
+.ViewBoard-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%; /* ViewBoard-box의 가로 너비를 100%로 설정 */
+  max-width: 500px; /* ViewBoard-box의 최대 너비 설정 */
+  margin: 0 auto;
+}
 
+.comment-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%; /* TextField가 ViewBoard-box에 꽉 차도록 설정 */
 }
-.ViewComment-box{
 
-}
-.ViewComment-container{
-
-}
 .comment-input-container {
+  width: 100%; /* ViewBoard-box와 동일한 가로 너비 설정 */
   display: flex;
   align-items: flex-start;
 }
@@ -19,7 +28,4 @@ padding-right: 80px;
 .comment-buttons {
   margin-top: 8px;
   margin-left: 8px;
-}
-.ViewCommentList-container{
-
 }

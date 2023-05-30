@@ -151,40 +151,43 @@ const ViewBoard = () => {
           <div className="ViewComment-container">
             <h4>댓글</h4>
             {currentUser ? (
-  <div className="comment-input-container">
-    <div className="comment-input-wrapper">
-      <TextField
-        id="standard-multiline-flexible"
-        placeholder="댓글 추가..."
-        multiline
-        variant="standard"
-        rows={1}
-        value={commentContent}
-        onChange={handleCommentChange}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <AccountCircle />
-            </InputAdornment>
-          ),
-        }}
-      />
-      <div className="comment-buttons">
-        <button
-          className="btn btn-secondary mt-2"
-          onClick={() => setCommentContent("")}
-        >
-          취소
-        </button>
-        <button className="btn btn-primary mt-2" onClick={createComment}>
-          댓글
-        </button>
-      </div>
-    </div>
-  </div>
-) : (
-  <p>댓글을 작성하려면 로그인이 필요합니다.</p>
-)}
+              <div className="comment-input-container">
+                <div className="comment-input-wrapper">
+                  <TextField
+                    id="standard-multiline-flexible"
+                    placeholder="댓글 추가..."
+                    multiline
+                    variant="standard"
+                    rows={1}
+                    value={commentContent}
+                    onChange={handleCommentChange}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AccountCircle />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                  <div className="comment-buttons">
+                    <button
+                      className="btn btn-secondary mt-2"
+                      onClick={() => setCommentContent("")}
+                    >
+                      취소
+                    </button>
+                    <button
+                      className="btn btn-primary mt-2"
+                      onClick={createComment}
+                    >
+                      댓글
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <p>댓글을 작성하려면 로그인이 필요합니다.</p>
+            )}
           </div>
           <ReactModal
             isOpen={modalIsOpen}
